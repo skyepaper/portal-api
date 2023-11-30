@@ -8,7 +8,11 @@ const ProjectSchema = new Schema({
         type:String,
         default:''
     },
-    images:[]
+    images:[],
+    gold:{
+        type:Number,
+        default:5
+    },
 })
 
 const Project = mongoose.model("Project", ProjectSchema);
