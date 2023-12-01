@@ -14,7 +14,7 @@ app.use(cors())
 
 server = require('http').createServer(app)
 
-mongoose.connect('--hidden--', {
+mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/portal?retryWrites=true&w=majority', {
     useNewUrlParser:true,
     useUnifiedTopology:true
 }).then(()=>console.log('Connected to DB'))
@@ -50,6 +50,22 @@ app.post('/project/new', async (req,res)=>{
     res.json(project)
 });
 
+app.delete('/project/delete/:id', async (req,res)=>{
+  const result=await Project.findByIdAndDelete(req.params.id);
+  res.json(result);
+})
+
+app.put('/project/save/:id', async (req,res)=>{
+
+  const project=await Project.findByIdAndUpdate(req.params.id);
+  if(project) {
+    project.gold= req.body.gold;
+  }
+  
+    project.save();
+    res.json(project);
+});
+
 app.get('/messages', cors(), async(req,res)=>{  
 
   const messages = await Message.find()
@@ -65,3 +81,9 @@ app.post('/message/new', async (req,res)=>{
   message.save()
   res.json(message)
 });
+
+app.delete('/message/delete/:id', async (req,res)=>{
+  const result=await Message.findByIdAndDelete(req.params.id);
+  res.json(result);
+})
+
